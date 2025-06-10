@@ -1,6 +1,6 @@
 # Thincell Video Player
 
-基于Vue 3的现代化视频播放器项目，支持弹幕功能。
+基于Vue 3的现代化视频播放器项目。
 
 ## 技术栈
 
@@ -14,7 +14,6 @@
 ### 播放器功能
 - ArtPlayer (主播放器)
 - HLS.js (流媒体支持)
-- artplayer-plugin-danmuku (弹幕插件)
 
 ### UI组件
 - Element Plus
@@ -35,8 +34,11 @@ thincell-video/
 │   ├── assets/          # 静态资源
 │   │   └── styles/     # 样式文件
 │   ├── components/      # 公共组件
+│   │   ├── common/     # 通用组件
+│   │   ├── global/     # 全局组件
+│   │   ├── layout/     # 布局组件
 │   │   ├── player/     # 播放器相关组件
-│   │   └── danmuku/    # 弹幕相关组件
+│   │   └── splash/     # 启动页组件
 │   ├── composables/    # 组合式函数
 │   ├── stores/         # Pinia状态管理
 │   ├── types/          # TypeScript类型定义
@@ -58,7 +60,9 @@ thincell-video/
 - [x] HLS流媒体支持
 - [x] 响应式布局
 - [x] 美观的UI设计
-- [ ] 弹幕功能
+- [x] 图片懒加载
+- [x] 分类导航
+- [x] 启动页动画
 - [ ] 画质切换
 - [ ] 播放速度控制
 - [ ] 主题切换
@@ -97,10 +101,9 @@ npm run format
 ## 贡献指南
 
 1. Fork 本仓库
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 开启 Pull Request
+2. 创建特性分支
+3. 提交代码
+4. 创建 Pull Request
 
 ## 许可证
 

@@ -9,16 +9,25 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
   </el-config-provider>
 </template>
 
-<style>
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
+<style lang="scss">
+@import '@/assets/styles/iconfont.scss';
+
+:root {
+  --background-color: #f6f7f9;
 }
 
-#app {
-  width: 100%;
-  height: 100%;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--background-color);
 }
 </style>

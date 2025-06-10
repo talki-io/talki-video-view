@@ -40,5 +40,6 @@
     "types": ["node", "vue-router"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "vite.config.ts"],
+  "exclude": ["src/components/common/ImageLoader.vue", "src/components/layout/VideoCard.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

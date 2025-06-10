@@ -1,41 +1,36 @@
 <template>
   <div class="home">
-    <div class="video-container">
-      <VideoPlayer :config="playerConfig" />
-    </div>
-    <div class="video-info" v-if="playerConfig.title">
-      <h2>{{ playerConfig.title }}</h2>
-    </div>
+    <HeaderBar />
+    <CategoryBar @category-change="handleCategoryChange" />
+    <BannerArea />
+    <FollowUpdate />
+    <SectionDivider :title="sectionTitle" />
+    <VideoGrid />
+    <BottomNav />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import VideoPlayer from '@/components/player/VideoPlayer.vue'
-import type { PlayerConfig } from '@/types'
+import { ref } from 'vue'
+import HeaderBar from '@/components/layout/HeaderBar.vue'
+import CategoryBar from '@/components/layout/CategoryBar.vue'
+import BannerArea from '@/components/layout/BannerArea.vue'
+import FollowUpdate from '@/components/layout/FollowUpdate.vue'
+import VideoGrid from '@/components/layout/VideoGrid.vue'
+import BottomNav from '@/components/layout/BottomNav.vue'
+import SectionDivider from '@/components/common/SectionDivider.vue'
 
-const playerConfig = ref<PlayerConfig>({
-  url: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',
-  title: '示例视频',
-  poster: 'https://picsum.photos/800/450',
-  volume: 0.8,
-  autoplay: false,
-  muted: false,
-  loop: false,
-  danmuku: {
-    enable: true,
-    url: 'ws://localhost:8080/danmuku',
-    color: '#fff',
-    fontSize: 24,
-    speed: 5,
-    opacity: 0.8,
-    area: 0.5
+const sectionTitle = ref('推荐内容')
+
+const handleCategoryChange = (category: string, subCategory?: string) => {
+  if (category === '推荐') {
+    sectionTitle.value = '推荐内容'
+  } else if (subCategory) {
+    sectionTitle.value = `${category}.${subCategory}`
+  } else {
+    sectionTitle.value = `${category}内容`
   }
-})
-
-onMounted(() => {
-  // 可以在这里添加视频信息获取逻辑
-})
+}
 </script>
 
 <style lang="scss" scoped>
@@ -44,39 +39,7 @@ onMounted(() => {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background: #f5f5f5;
-}
-
-.video-container {
-  width: 800px;
-  height: 450px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 20px;
-}
-
-.video-info {
-  width: 800px;
-  padding: 20px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-
-  h2 {
-    margin: 0;
-    font-size: 1.5rem;
-    color: #333;
-  }
-}
-
-@media (max-width: 850px) {
-  .video-container,
-  .video-info {
-    width: 100%;
-    max-width: 800px;
-  }
+  background: var(--background-color);
+  padding-bottom: 56px;
 }
 </style> 

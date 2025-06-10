@@ -15,12 +15,12 @@
     "@types/vue-router": "^2.0.0",
     "@vueuse/core": "^10.7.0",
     "artplayer": "^4.6.0",
-    "artplayer-plugin-danmuku": "^5.1.6",
     "axios": "^1.6.2",
     "element-plus": "^2.4.3",
     "hls.js": "^1.4.12",
     "lodash": "^4.17.21",
     "pinia": "^2.1.7",
+    "swiper": "^11.2.8",
     "vue": "^3.3.11",
     "vue-router": "^4.5.1"
   },

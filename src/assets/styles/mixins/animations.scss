@@ -1,0 +1,62 @@
+// 卡片悬浮效果
+@mixin hover-card($distance: -4px, $shadow-size: 24px, $shadow-opacity: 0.12) {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  &:hover {
+    transform: translateY($distance);
+    box-shadow: 0 8px $shadow-size rgba(0, 0, 0, $shadow-opacity);
+  }
+}
+
+// 按钮点击效果
+@mixin btn-press($scale: 0.95) {
+  transition: transform 0.1s ease, background-color 0.2s ease;
+  
+  &:active {
+    transform: scale($scale);
+  }
+}
+
+// 图片缩放效果
+@mixin image-zoom($scale: 1.05) {
+  overflow: hidden;
+  
+  img {
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover img {
+    transform: scale($scale);
+  }
+}
+
+// 淡入动画
+@mixin fade-in($duration: 0.3s, $delay: 0s) {
+  opacity: 0;
+  animation: fade-in $duration ease forwards $delay;
+  
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+// 加载动画
+@mixin loading-spin($size: 24px, $border-width: 2px, $color: #ff5c8a) {
+  width: $size;
+  height: $size;
+  border: $border-width solid rgba($color, 0.2);
+  border-left-color: $color;
+  border-radius: 50%;
+  animation: loading-spin 1s linear infinite;
+  
+  @keyframes loading-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+} 
