@@ -14,7 +14,7 @@ import avatarUrl from '@/assets/images/start.png'
 
 <style lang="scss" scoped>
 .profile-page {
-  padding: 40px 0 80px 0;
+  padding: 100px 0 80px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -42,6 +42,12 @@ import avatarUrl from '@/assets/images/start.png'
     border-radius: 20px;
     font-size: 15px;
     cursor: pointer;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-page {
+    padding: 88px 0 80px 0;
   }
 }
 </style> 

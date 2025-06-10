@@ -64,7 +64,6 @@ const coverflowEffect = {
 
   .banner-slide {
     width: 85%;
-    transition: transform 0.3s;
 
     .banner-img-wrap {
       position: relative;
@@ -73,7 +72,6 @@ const coverflowEffect = {
       border-radius: 12px;
       overflow: hidden;
       background: #eee;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
 
       .th-image {
         position: absolute;

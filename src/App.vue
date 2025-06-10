@@ -10,7 +10,7 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 </template>
 
 <style lang="scss">
-@import '@/assets/styles/iconfont.scss';
+@use '@/assets/styles/iconfont.scss';
 
 :root {
   --background-color: #f6f7f9;

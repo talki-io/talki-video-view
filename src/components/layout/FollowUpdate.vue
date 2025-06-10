@@ -28,10 +28,8 @@ const updateStatus = '全片'
   align-items: center;
   background: #fff;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   padding: 8px 12px;
   margin: 8px 8px;
-  @include hover-card(-2px, 16px, 0.08);
   
   .avatar {
     width: 40px;

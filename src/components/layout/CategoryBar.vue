@@ -157,10 +157,14 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .category-bar {
-  position: relative;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
   width: 100%;
   background: #fff;
   border-bottom: 1px solid #f0f0f0;
+  z-index: 999;
   
   .category-list {
     position: relative;
@@ -229,6 +233,7 @@ onMounted(() => {
 
 @media (max-width: 600px) {
   .category-bar {
+    top: 48px;
     .category-list {
       .category-item {
         padding: 10px 14px;

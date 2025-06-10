@@ -40,6 +40,13 @@ const handleCategoryChange = (category: string, subCategory?: string) => {
   display: flex;
   flex-direction: column;
   background: var(--background-color);
+  padding-top: 108px;
   padding-bottom: 56px;
+}
+
+@media (max-width: 600px) {
+  .home {
+    padding-top: 96px;
+  }
 }
 </style> 

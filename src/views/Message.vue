@@ -14,9 +14,17 @@
   align-items: center;
   justify-content: center;
   background: var(--background-color);
+  padding-top: 60px;
+  
   .msg-empty {
     color: #888;
     font-size: 18px;
+  }
+}
+
+@media (max-width: 600px) {
+  .message-page {
+    padding-top: 48px;
   }
 }
 </style> 

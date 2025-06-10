@@ -99,14 +99,12 @@ const videos = Array.from({length:8}).map((_,i)=>({
     box-shadow: 0 2px 12px rgba(0,0,0,0.08);
     overflow: hidden;
     margin-bottom: 14px;
-    @include hover-card;
     
     .thumb-wrap {
       position: relative;
       width: 100%;
       aspect-ratio: 16/9;
       background: #eee;
-      @include image-zoom;
       
       .th-image {
         position: absolute;
@@ -234,14 +232,12 @@ const videos = Array.from({length:8}).map((_,i)=>({
       box-shadow: 0 2px 12px rgba(0,0,0,0.08);
       display: flex;
       flex-direction: column;
-      @include hover-card;
       
       .thumb-wrap {
         position: relative;
         width: 100%;
         aspect-ratio: 16/9;
         background: #eee;
-        @include image-zoom;
         
         .th-image {
           position: absolute;
@@ -249,10 +245,6 @@ const videos = Array.from({length:8}).map((_,i)=>({
           left: 0;
           width: 100%;
           height: 100%;
-        }
-        
-        &:hover .th-image {
-          transform: scale(1.05);
         }
         
         .episode-count {

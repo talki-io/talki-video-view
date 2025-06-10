@@ -1,36 +1,38 @@
 <template>
-  <div class="category-popup" v-if="modelValue" @click.self="close">
-    <div class="popup-content">
-      <div class="popup-header">
-        <h3>全部分类</h3>
-        <div class="close-btn" @click="close">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6 6l12 12M6 18L18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
+  <teleport to="body">
+    <div class="category-popup" v-if="modelValue" @click.self="close">
+      <div class="popup-content">
+        <div class="popup-header">
+          <h3>全部分类</h3>
+          <div class="close-btn" @click="close">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 6l12 12M6 18L18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
         </div>
-      </div>
-      <div class="category-sections">
-        <div 
-          v-for="(section, index) in sections" 
-          :key="index"
-          class="category-section"
-        >
-          <div class="section-title">{{ section.title }}</div>
-          <div class="section-items">
-            <div 
-              v-for="(item, itemIndex) in section.items" 
-              :key="itemIndex"
-              class="category-item"
-              :class="{ active: activeMainIndex === index && activeSubIndex === itemIndex }"
-              @click="handleItemClick(index, itemIndex, item)"
-            >
-              {{ item }}
+        <div class="category-sections">
+          <div 
+            v-for="(section, index) in sections" 
+            :key="index"
+            class="category-section"
+          >
+            <div class="section-title">{{ section.title }}</div>
+            <div class="section-items">
+              <div 
+                v-for="(item, itemIndex) in section.items" 
+                :key="itemIndex"
+                class="category-item"
+                :class="{ active: activeMainIndex === index && activeSubIndex === itemIndex }"
+                @click="handleItemClick(index, itemIndex, item)"
+              >
+                {{ item }}
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </teleport>
 </template>
 
 <script setup lang="ts">
@@ -76,7 +78,7 @@ const handleItemClick = (mainIndex: number, subIndex: number, item: string) => {
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+  z-index: 2000;
   display: flex;
   justify-content: center;
   align-items: flex-start;
