@@ -3,6 +3,7 @@ import Home from '@/views/Home.vue'
 import Splash from '@/views/Splash.vue'
 import Profile from '@/views/Profile.vue'
 import Message from '@/views/Message.vue'
+import SearchPage from '@/views/SearchPage.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -30,6 +31,11 @@ const router = createRouter({
       path: '/splash',
       name: 'splash',
       component: Splash
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: SearchPage
     }
   ]
 })
