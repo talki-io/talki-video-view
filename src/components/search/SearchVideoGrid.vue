@@ -1,12 +1,7 @@
 <template>
   <div class="search-video-grid">
-    <div class="result-title">
-      <span class="label">与</span>
-      <span class="hl">{{ keyword }}</span>
-      <span class="label">相关的内容</span>
-    </div>
     <div class="video-grid">
-      <div class="video-card" v-for="video in videos" :key="video.id">
+      <div class="video-card" v-for="video in videos" :key="video.id" @click="$emit('select', video)" style="cursor:pointer">
         <div class="thumb-wrap">
           <ImageLoader :src="video.cover" :alt="video.title" />
           <div class="episode-count">全{{ video.episodes }}集</div>
@@ -57,25 +52,6 @@ const props = defineProps<{
   margin: 0 auto;
   padding: 0 10px;
   box-sizing: border-box;
-  .result-title {
-    font-size: 16px;
-    font-weight: 500;
-    color: #222;
-    margin: 16px 0 10px 0;
-    display: flex;
-    align-items: center;
-    .label {
-      margin: 0 2px;
-      color: #333;
-      font-weight: 400;
-    }
-    .hl {
-      color: #ff5c8a;
-      font-weight: 600;
-      margin: 0 2px;
-      font-size: 17px;
-    }
-  }
   .video-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -172,13 +148,6 @@ const props = defineProps<{
   @media (max-width: 600px) {
     max-width: 100vw;
     padding: 0 4px;
-    .result-title {
-      font-size: 15px;
-      margin: 10px 0 8px 0;
-      .hl {
-        font-size: 15px;
-      }
-    }
   }
 }
 </style> 

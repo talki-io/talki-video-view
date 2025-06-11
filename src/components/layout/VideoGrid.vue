@@ -27,37 +27,58 @@
     </div>
     
     <!-- 视频列表区域 -->
-    <div class="grid-list">
-      <div v-for="(video, idx) in videos" :key="idx" class="video-card">
-        <div class="thumb-wrap">
-          <ThImage :src="video.poster" :alt="video.title" />
-          <div class="episode-count">全{{ video.episodes }}集</div>
-          <div class="recommend-tag" v-if="video.isRecommend">
-            <span class="icon">✦</span>
-            <span class="text">推荐</span>
+    <InfiniteScroll
+      :loading="loading"
+      :has-more="hasMore"
+      @load-more="loadMore"
+    >
+      <div class="grid-list">
+        <div v-for="(video, idx) in videos" :key="idx" class="video-card">
+          <div class="thumb-wrap">
+            <ThImage :src="(video as any).poster" :alt="(video as any).title" />
+            <div class="episode-count">全{{ (video as any).episodes }}集</div>
+            <div class="recommend-tag" v-if="(video as any).isRecommend">
+              <span class="icon">✦</span>
+              <span class="text">推荐</span>
+            </div>
+            <div class="video-info-bar">
+              <span class="info-item">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff">
+                  <path d="M3,3 L21,3 L21,21 L3,21 L3,3 Z M5,5 L5,19 L19,19 L19,5 L5,5 Z M9,8 L16,12 L9,16 L9,8 Z"/>
+                </svg>
+                {{ (video as any).views }}
+              </span>
+              <span class="info-item time">{{ (video as any).duration }}</span>
+            </div>
           </div>
-          <div class="video-info-bar">
-            <span class="info-item">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff">
-                <path d="M3,3 L21,3 L21,21 L3,21 L3,3 Z M5,5 L5,19 L19,19 L19,5 L5,5 Z M9,8 L16,12 L9,16 L9,8 Z"/>
-              </svg>
-              {{ video.views }}
-            </span>
-            <span class="info-item time">{{ video.duration }}</span>
+          <div class="video-title text-ellipsis">{{(video as any).title}}</div>
+          <div class="video-meta">
+            <span class="up">UP · {{ (video as any).up }}</span>
+            <span class="cat">{{ (video as any).cat }}</span>
           </div>
-        </div>
-        <div class="video-title text-ellipsis">{{video.title}}</div>
-        <div class="video-meta">
-          <span class="up">UP · {{ video.up }}</span>
-          <span class="cat">{{ video.cat }}</span>
         </div>
       </div>
-    </div>
+    </InfiniteScroll>
   </div>
 </template>
 
 <script setup lang="ts">
 import ThImage from '@/components/global/ThImage.vue'
+import InfiniteScroll from '@/components/common/InfiniteScroll.vue'
+import { defineProps, defineEmits } from 'vue'
+
+const props = defineProps({
+  videos: {
+    type: Array,
+    default: () => []
+  },
+  loading: Boolean,
+  hasMore: Boolean
+})
+const emit = defineEmits(['load-more'])
+function loadMore() {
+  emit('load-more')
+}
 
 // Banner数据
 const bannerData = {
@@ -70,18 +91,6 @@ const bannerData = {
   episodes: 24,
   isRecommend: true
 }
-
-// 视频列表数据
-const videos = Array.from({length:8}).map((_,i)=>({
-  title: `示例视频${i+1}`,
-  poster: `https://picsum.photos/600/340?random=${i+1}`,
-  views: `${(Math.random()*50+1).toFixed(1)}万`,
-  duration: `${Math.floor(Math.random()*4+1)}:${(Math.random()*60|0).toString().padStart(2,'0')}`,
-  up: ['沙雕UP主','搞笑日常','动漫菌','科技宅','美食家','音乐人','游戏咖','生活家'][i%8],
-  cat: ['趣味','搞笑','动漫','科技','美食','音乐','游戏','生活'][i%8],
-  episodes: Math.floor(Math.random() * 20) + 10,
-  isRecommend: 0
-}))
 </script>
 
 <style lang="scss" scoped>

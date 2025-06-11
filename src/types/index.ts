@@ -7,6 +7,7 @@ export interface PlayerConfig {
   autoplay?: boolean;
   muted?: boolean;
   loop?: boolean;
+  vtt?: string; 
 }
 
 // 播放器状态类型

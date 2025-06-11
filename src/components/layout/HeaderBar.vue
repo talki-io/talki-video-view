@@ -1,15 +1,15 @@
 <template>
   <div class="header-bar">
-    <div class="avatar">
-      <img :src="avatarUrl" alt="avatar" />
+    <div class="avatar" tabindex="0" aria-label="个人中心" @click="goProfile">
+      <img :src="avatarUrl" alt="用户头像" />
     </div>
     <SearchBox @search="handleSearch" />
-    <div class="icon-btn" @click="goMessage">
+    <button class="icon-btn" @click="goMessage" tabindex="0" aria-label="消息中心">
       <div class="icon-message-wrap">
         <svg class="icon-message-svg" viewBox="0 0 1024 1024" width="22" height="22"><path d="M128 224h768a32 32 0 0 1 32 32v512a32 32 0 0 1-32 32H128a32 32 0 0 1-32-32V256a32 32 0 0 1 32-32zm32 64v448h704V288l-352 256L160 288zm64-32l288 210.7L832 256H192z" fill="#ff5c8a"/></svg>
-        <span class="msg-dot"></span>
+        <span v-if="showDot" class="msg-dot"></span>
       </div>
-    </div>
+    </button>
   </div>
 </template>
 
@@ -17,16 +17,25 @@
 import avatarUrl from '@/assets/images/start.png'
 import { useRouter } from 'vue-router'
 import SearchBox from '@/components/common/SearchBox.vue'
+import { ref } from 'vue'
 
 const router = useRouter()
+const showDot = ref(true) // 可根据实际未读消息状态控制
 
 function goMessage() {
   router.push('/message')
 }
-
+function goProfile() {
+  router.push('/profile')
+}
 function handleSearch(value: string) {
-  console.log('搜索:', value)
-  // TODO: 处理搜索逻辑
+  if (value && value.trim()) {
+    router.push({ path: '/search', query: { keyword: value.trim() } })
+  }
+}
+
+function goPlay(video: any) {
+  router.push({ path: '/play', query: { id: video.id } })
 }
 </script>
 
@@ -42,6 +51,7 @@ function handleSearch(value: string) {
   padding: 12px 16px;
   background: #fff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  user-select: none;
   
   .avatar {
     width: 36px;
@@ -52,7 +62,7 @@ function handleSearch(value: string) {
     cursor: pointer;
     transition: transform 0.2s ease;
     
-    &:hover {
+    &:hover, &:focus {
       transform: scale(1.05);
     }
     
@@ -68,12 +78,15 @@ function handleSearch(value: string) {
     cursor: pointer;
     display: flex;
     align-items: center;
+    background: none;
+    border: none;
+    outline: none;
     
     .icon-message-wrap {
       position: relative;
       transition: transform 0.2s ease;
       
-      &:hover {
+      &:hover, &:focus {
         transform: scale(1.1);
       }
       

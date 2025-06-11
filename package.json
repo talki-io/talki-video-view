@@ -15,6 +15,7 @@
     "@types/vue-router": "^2.0.0",
     "@vueuse/core": "^10.7.0",
     "artplayer": "^4.6.0",
+    "artplayer-plugin-vtt-thumbnail": "^1.0.3",
     "axios": "^1.6.2",
     "element-plus": "^2.4.3",
     "hls.js": "^1.4.12",

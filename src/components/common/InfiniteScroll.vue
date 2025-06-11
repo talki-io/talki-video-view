@@ -1,12 +1,8 @@
 <template>
   <div 
     class="infinite-scroll" 
-    ref="scrollRef" 
-    @scroll.passive="handleScroll"
-    @touchstart="handleTouchStart"
-    @touchmove="handleTouchMove"
-    @touchend="handleTouchEnd"
-  >
+    ref="scrollRef"
+    >
     <div v-if="enablePullRefresh" class="pull-refresh" :style="{ height: `${pullDistance}px` }">
       <div class="pull-refresh-content" :class="{ 'is-pulling': isPulling }">
         <span v-if="!isPulling">下拉刷新</span>
@@ -64,25 +60,43 @@ function debounce(fn: Function, delay: number) {
   }
 }
 
-// 处理滚动
+// 新增：桌面端监听 window 滚动
+function handleWindowScroll() {
+  if (props.loading || !props.hasMore || props.error) return
+  const threshold = props.threshold || 100
+  const scrollTop = window.scrollY || document.documentElement.scrollTop
+  const clientHeight = window.innerHeight
+  const scrollHeight = document.documentElement.scrollHeight
+  if (scrollTop + clientHeight >= scrollHeight - threshold) {
+    emit('loadMore')
+  }
+}
+
+// 处理滚动（容器滚动，移动端）
 const handleScroll = debounce(async () => {
   if (props.loading || !props.hasMore || props.error) return
-  
   await nextTick()
   const el = scrollRef.value
   if (!el) return
-  
   const threshold = props.threshold || 100
   const scrollTop = el.scrollTop
   const clientHeight = el.clientHeight
   const scrollHeight = el.scrollHeight
-  
-  // 检测是否滚动到底部
   if (scrollTop + clientHeight >= scrollHeight - threshold) {
     lastScrollTop.value = scrollTop
     emit('loadMore')
   }
 }, 200)
+
+// 新增：内容高度不足时自动触发加载
+async function tryAutoLoad() {
+  await nextTick()
+  const el = scrollRef.value
+  if (!el) return
+  if (el.scrollHeight <= el.clientHeight + 10 && props.hasMore && !props.loading && !props.error) {
+    emit('loadMore')
+  }
+}
 
 // 下拉刷新相关
 function handleTouchStart(e: TouchEvent) {
@@ -143,15 +157,28 @@ function handleResize() {
 
 onMounted(() => {
   window.addEventListener('resize', handleResize)
+  // 桌面端监听 window 滚动
+  window.addEventListener('scroll', handleWindowScroll)
   if (scrollRef.value) {
     scrollRef.value.scrollTop = 0
+    tryAutoLoad()
+    // 注册 touch 事件，passive: false
+    scrollRef.value.addEventListener('touchstart', handleTouchStart, { passive: false })
+    scrollRef.value.addEventListener('touchmove', handleTouchMove, { passive: false })
+    scrollRef.value.addEventListener('touchend', handleTouchEnd, { passive: false })
   }
 })
 
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
+  window.removeEventListener('scroll', handleWindowScroll)
   if (scrollTimer.value) {
     clearTimeout(scrollTimer.value)
+  }
+  if (scrollRef.value) {
+    scrollRef.value.removeEventListener('touchstart', handleTouchStart)
+    scrollRef.value.removeEventListener('touchmove', handleTouchMove)
+    scrollRef.value.removeEventListener('touchend', handleTouchEnd)
   }
 })
 </script>
@@ -159,11 +186,7 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 .infinite-scroll {
   width: 100%;
-  height: 100vh;
-  overflow-y: auto;
   position: relative;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
 }
 
 .pull-refresh {

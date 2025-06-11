@@ -3,7 +3,9 @@ import Home from '@/views/Home.vue'
 import Splash from '@/views/Splash.vue'
 import Profile from '@/views/Profile.vue'
 import Message from '@/views/Message.vue'
-import SearchPage from '@/views/SearchPage.vue'
+import Search from '@/views/Search.vue'
+import PlayPage from '@/views/PlayPage.vue'
+import SearchResultPage from '@/views/SearchResultPage.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -35,7 +37,17 @@ const router = createRouter({
     {
       path: '/search',
       name: 'search',
-      component: SearchPage
+      component: Search
+    },
+    {
+      path: '/play',
+      name: 'play',
+      component: PlayPage
+    },
+    {
+      path: '/search-result',
+      name: 'search-result',
+      component: SearchResultPage
     }
   ]
 })

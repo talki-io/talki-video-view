@@ -26,6 +26,7 @@ declare module 'artplayer' {
     notice: {
       show: string
     }
+    switchUrl(url: string): void
   }
 }
 

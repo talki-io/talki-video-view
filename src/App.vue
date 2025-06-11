@@ -33,13 +33,21 @@ const transitionName = computed(() =>
   box-sizing: border-box;
 }
 
+html, body, #app {
+  width: 100%;
+  min-height: 100vh;
+  height: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: var(--background-color);
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
     'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--background-color);
 }
 
 .slide-fade-enter-active, .slide-fade-leave-active {
