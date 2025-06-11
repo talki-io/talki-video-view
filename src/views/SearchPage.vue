@@ -1,12 +1,21 @@
 <template>
-  <div class="search-page" @scroll.passive="handleScroll" ref="pageRef">
-    <SearchInputBar @search="onSearch" v-model:keyword="keyword" @input="onInput" />
-    <HotSearchList v-if="!keyword && !showResult" />
-    <SearchSuggestList v-else-if="!showResult" :keyword="keyword" :recommend-list="recommendList" :text-list="textList" />
-    <SearchVideoGrid v-if="showResult" :keyword="keyword" :videos="displayVideos" />
-    <div v-if="showResult && loadingMore" class="loading-more">加载中...</div>
-    <div v-if="showResult && !hasMore && displayVideos.length" class="no-more">没有更多了</div>
-  </div>
+  <InfiniteScroll
+    :loading="loadingMore"
+    :has-more="hasMore"
+    :enable-pull-refresh="true"
+    :error="error"
+    :error-message="errorMessage"
+    @load-more="loadMore"
+    @refresh="refresh"
+    @retry="retry"
+  >
+    <div class="search-page">
+      <SearchInputBar @search="onSearch" v-model:keyword="keyword" @input="onInput" />
+      <HotSearchList v-if="!keyword && !showResult" @select="handleSelect" />
+      <SearchSuggestList v-else-if="!showResult" :keyword="keyword" :recommend-list="recommendList" :text-list="textList" @select="handleSelect" />
+      <SearchVideoGrid v-if="showResult" :keyword="keyword" :videos="displayVideos" />
+    </div>
+  </InfiniteScroll>
 </template>
 
 <script setup lang="ts">
@@ -15,6 +24,7 @@ import SearchInputBar from '@/components/search/SearchInputBar.vue'
 import HotSearchList from '@/components/search/HotSearchList.vue'
 import SearchSuggestList from '@/components/search/SearchSuggestList.vue'
 import SearchVideoGrid from '@/components/search/SearchVideoGrid.vue'
+import InfiniteScroll from '@/components/common/InfiniteScroll.vue'
 
 const keyword = ref('')
 const recommendList = ref<any[]>([])
@@ -24,7 +34,8 @@ const videoList = ref<any[]>([])
 const displayVideos = ref<any[]>([])
 const loadingMore = ref(false)
 const hasMore = ref(true)
-const pageRef = ref<HTMLElement | null>(null)
+const error = ref(false)
+const errorMessage = ref('')
 const PAGE_SIZE = 9
 let allVideos: any[] = []
 
@@ -115,49 +126,49 @@ function updateSuggest() {
   textList.value = allText.filter(item => item.includes(keyword.value))
 }
 
-async function handleScroll() {
-  if (!showResult.value || loadingMore.value || !hasMore.value) return
-  await nextTick()
-  const el = pageRef.value
-  if (!el) return
-  if (el.scrollTop + el.clientHeight >= el.scrollHeight - 40) {
-    loadingMore.value = true
-    setTimeout(() => {
+function loadMore() {
+  if (error.value) return
+  loadingMore.value = true
+  error.value = false
+  
+  setTimeout(() => {
+    try {
       const next = displayVideos.value.length + PAGE_SIZE
       displayVideos.value = videoList.value.slice(0, next)
       hasMore.value = displayVideos.value.length < videoList.value.length
+    } catch (e) {
+      error.value = true
+      errorMessage.value = '加载失败，请重试'
+    } finally {
       loadingMore.value = false
-    }, 600)
-  }
+    }
+  }, 600)
 }
 
-onMounted(() => {
-  // 兼容页面初次加载时的滚动
-  if (pageRef.value) {
-    pageRef.value.scrollTop = 0
-  }
-})
+function refresh() {
+  error.value = false
+  errorMessage.value = ''
+  onSearch(keyword.value)
+}
+
+function retry() {
+  error.value = false
+  errorMessage.value = ''
+  loadMore()
+}
+
+function handleSelect(val: string) {
+  keyword.value = val
+  onSearch(val)
+}
 </script>
 
 <style lang="scss" scoped>
 .search-page {
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
   background: #fff;
   padding-bottom: 16px;
-  overflow-y: auto;
-  max-height: 100vh;
-}
-.loading-more {
-  text-align: center;
-  color: #888;
-  font-size: 15px;
-  padding: 16px 0 8px 0;
-}
-.no-more {
-  text-align: center;
-  color: #bbb;
-  font-size: 14px;
-  padding: 12px 0 8px 0;
+  box-sizing: border-box;
 }
 </style> 

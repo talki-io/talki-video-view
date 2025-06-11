@@ -1,7 +1,7 @@
 <template>
   <div class="search-suggest-list">
     <template v-if="recommendList.length">
-      <div class="suggest-recommend" v-for="item in recommendList" :key="item.id">
+      <div class="suggest-recommend" v-for="item in recommendList" :key="item.id" @click="$emit('select', item.title)" style="cursor:pointer">
         <img class="cover" :src="item.cover" />
         <div class="info">
           <div class="title">
@@ -13,7 +13,7 @@
       </div>
     </template>
     <template v-if="textList.length">
-      <div class="suggest-text" v-for="(item, idx) in textList" :key="idx">
+      <div class="suggest-text" v-for="(item, idx) in textList" :key="idx" @click="$emit('select', item)" style="cursor:pointer">
         <span v-html="highlight(item)"></span>
       </div>
     </template>

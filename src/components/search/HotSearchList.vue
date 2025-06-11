@@ -6,7 +6,7 @@
     </div>
     <div v-if="history.length" class="history-items">
       <div class="history-item" v-for="(item, idx) in history" :key="item">
-        <span class="text">{{ item }}</span>
+        <span class="text" @click="$emit('select', item)" style="cursor:pointer">{{ item }}</span>
         <span class="delete-btn" @click="remove(idx)">×</span>
       </div>
     </div>
@@ -15,8 +15,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, defineEmits } from 'vue'
 
+const emit = defineEmits(['select'])
 const history = ref([
   '生化危机8',
   '四点的海棠花未眠',
