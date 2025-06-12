@@ -1,7 +1,7 @@
 <template>
   <div class="profile-page">
     <div class="profile-header">
-      <img :src="avatarUrl" class="avatar" />
+      <img :src="startImg" class="avatar" />
       <div class="username">未登录用户</div>
     </div>
     <button class="logout-btn">退出登录</button>
@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import avatarUrl from '@/assets/images/start.png'
+import startImg from '@/assets/images/start.png'
 </script>
 
 <style lang="scss" scoped>

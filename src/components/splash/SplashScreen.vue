@@ -23,6 +23,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import startImg from '@/assets/images/start.png'
 
 const props = defineProps<{
   type?: 'image' | 'video' | 'gif'
@@ -35,7 +36,7 @@ const isFading = ref(false)
 const countdown = ref(3)
 
 const type = props.type || 'image'
-const src = props.src || '/src/assets/images/start.png'
+const src = props.src || startImg
 const title = props.title || 'Thincell Video'
 
 onMounted(() => {

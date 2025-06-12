@@ -8,7 +8,7 @@ import PlayPage from '@/views/PlayPage.vue'
 import SearchResultPage from '@/views/SearchResultPage.vue'
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory('/video/'),
   routes: [
     {
       path: '/',

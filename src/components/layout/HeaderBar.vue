@@ -1,7 +1,7 @@
 <template>
   <div class="header-bar">
     <div class="avatar" tabindex="0" aria-label="个人中心" @click="goProfile">
-      <img :src="avatarUrl" alt="用户头像" />
+      <img :src="startImg" alt="用户头像" />
     </div>
     <SearchBox @search="handleSearch" />
     <button class="icon-btn" @click="goMessage" tabindex="0" aria-label="消息中心">
@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import avatarUrl from '@/assets/images/start.png'
+import startImg from '@/assets/images/start.png'
 import { useRouter } from 'vue-router'
 import SearchBox from '@/components/common/SearchBox.vue'
 import { ref } from 'vue'
