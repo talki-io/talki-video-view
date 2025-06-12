@@ -32,22 +32,22 @@
       :has-more="hasMore"
       @load-more="loadMore"
     >
-      <div class="grid-list">
-        <div v-for="(video, idx) in videos" :key="idx" class="video-card">
-          <div class="thumb-wrap">
+    <div class="grid-list">
+      <div v-for="(video, idx) in videos" :key="idx" class="video-card">
+        <div class="thumb-wrap">
             <ThImage :src="(video as any).poster" :alt="(video as any).title" />
             <div class="episode-count">全{{ (video as any).episodes }}集</div>
             <div class="recommend-tag" v-if="(video as any).isRecommend">
-              <span class="icon">✦</span>
-              <span class="text">推荐</span>
-            </div>
-            <div class="video-info-bar">
-              <span class="info-item">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff">
-                  <path d="M3,3 L21,3 L21,21 L3,21 L3,3 Z M5,5 L5,19 L19,19 L19,5 L5,5 Z M9,8 L16,12 L9,16 L9,8 Z"/>
-                </svg>
+            <span class="icon">✦</span>
+            <span class="text">推荐</span>
+          </div>
+          <div class="video-info-bar">
+            <span class="info-item">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff">
+                <path d="M3,3 L21,3 L21,21 L3,21 L3,3 Z M5,5 L5,19 L19,19 L19,5 L5,5 Z M9,8 L16,12 L9,16 L9,8 Z"/>
+              </svg>
                 {{ (video as any).views }}
-              </span>
+            </span>
               <span class="info-item time">{{ (video as any).duration }}</span>
             </div>
           </div>

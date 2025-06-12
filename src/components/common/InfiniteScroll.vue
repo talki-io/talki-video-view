@@ -1,8 +1,8 @@
 <template>
   <div 
     class="infinite-scroll" 
-    ref="scrollRef"
-    >
+    ref="scrollRef" 
+  >
     <div v-if="enablePullRefresh" class="pull-refresh" :style="{ height: `${pullDistance}px` }">
       <div class="pull-refresh-content" :class="{ 'is-pulling': isPulling }">
         <span v-if="!isPulling">下拉刷新</span>
