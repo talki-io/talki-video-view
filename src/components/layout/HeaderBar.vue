@@ -50,7 +50,6 @@ function goPlay(video: any) {
   align-items: center;
   padding: 12px 16px;
   background: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
   user-select: none;
   
   .avatar {
@@ -112,8 +111,6 @@ function goPlay(video: any) {
 // 添加移动端适配
 @media (max-width: 600px) {
   .header-bar {
-    padding: 8px 12px;
-    
     .avatar {
       width: 32px;
       height: 32px;

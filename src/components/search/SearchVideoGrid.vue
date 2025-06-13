@@ -48,7 +48,7 @@ const props = defineProps<{
 <style lang="scss" scoped>
 .search-video-grid {
   width: 100%;
-  max-width: 700px;
+  // max-width: 700px;
   margin: 0 auto;
   padding: 0 10px;
   box-sizing: border-box;
