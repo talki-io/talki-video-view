@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import startImg from '@/assets/images/start.png'
+import startImg from '@/assets/images/icon/start.png'
 import { useRouter } from 'vue-router'
 import SearchBox from '@/components/common/SearchBox.vue'
 import { ref } from 'vue'

@@ -6,8 +6,8 @@ interface LoadingOptions {
 }
 
 const defaultOptions: LoadingOptions = {
-  loading: '@/assets/images/loading-animation.gif',
-  error: '@/assets/images/error.png'
+  loading: '@/assets/images/icon/Loading-animation.gif',
+  error: '@/assets/images/icon/error.png'
 }
 
 const loadImage = (el: HTMLImageElement, src: string): Promise<void> => {

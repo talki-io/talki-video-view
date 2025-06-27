@@ -6,6 +6,11 @@ import Message from '@/views/Message.vue'
 import Search from '@/views/Search.vue'
 import PlayPage from '@/views/PlayPage.vue'
 import SearchResultPage from '@/views/SearchResultPage.vue'
+import Login from '@/views/Login.vue'
+import Register from '@/views/Register.vue'
+import ForgotPassword from '@/views/ForgotPassword.vue'
+import { useAuthStore } from '@/stores/auth'
+import { storeToRefs } from 'pinia'
 
 const router = createRouter({
   history: createWebHistory('/video/'),
@@ -22,12 +27,14 @@ const router = createRouter({
     {
       path: '/profile',
       name: 'profile',
-      component: Profile
+      component: Profile,
+      meta: { requiresAuth: true }
     },
     {
       path: '/message',
       name: 'message',
-      component: Message
+      component: Message,
+      meta: { requiresAuth: true }
     },
     {
       path: '/splash',
@@ -48,8 +55,34 @@ const router = createRouter({
       path: '/search-result',
       name: 'search-result',
       component: SearchResultPage
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register
+    },
+    {
+      path: '/forgot-password',
+      name: 'forgot-password',
+      component: ForgotPassword
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore()
+  const { isLoggedIn } = storeToRefs(authStore)
+  // 判断 meta.requiresAuth
+  if (to.meta.requiresAuth && !isLoggedIn.value) {
+    next('/login')
+    return
+  }
+  next()
 })
 
 export default router 

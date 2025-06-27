@@ -1,21 +1,31 @@
 <template>
   <div class="top-action-bar">
-    <div class="action-btn" @click="toggleIcon">
-      <img :src="currentIcon" class="svg-icon" alt="icon" />
+    <div class="action-btn" @click="handleAction">
+      <img :src="installIcon" class="svg-icon" alt="install" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import moon from '@/assets/images/moon.svg'
-import sun from '@/assets/images/sun.svg'
+import { useAuthStore } from '@/stores/auth'
+import { useRouter } from 'vue-router'
+import install from '@/assets/images/icon/install.svg'
 
-const isMoon = ref(true)
-const currentIcon = computed(() => isMoon.value ? moon : sun)
+const authStore = useAuthStore()
+const router = useRouter()
 
-function toggleIcon() {
-  isMoon.value = !isMoon.value
+const installIcon = install
+
+const handleAction = () => {
+  if (authStore.isLoggedIn) {
+    // 如果已登录，执行退出登录
+    authStore.logout()
+    // 可以添加提示信息
+    console.log('已退出登录')
+  } else {
+    // 如果未登录，可以跳转到登录页或执行其他操作
+    router.push('/login')
+  }
 }
 </script>
 
@@ -28,8 +38,8 @@ function toggleIcon() {
   .action-btn {
     cursor: pointer;
     .svg-icon {
-      width: 32px;
-      height: 32px;
+      width: 22px;
+      height: 22px;
       display: block;
       transition: filter 0.2s;
     }

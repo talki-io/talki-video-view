@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import startImg from '@/assets/images/start.png'
+import startImg from '@/assets/images/icon/start.png'
 
 const props = defineProps<{
   type?: 'image' | 'video' | 'gif'

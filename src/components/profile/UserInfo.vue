@@ -22,9 +22,9 @@ import HistoryList from './HistoryList.vue'
 import UserBaseInfo from './UserBaseInfo.vue'
 import UserTabBar from './UserTabBar.vue'
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
-import startImg from '@/assets/images/start.png'
-import history from '@/assets/images/history.png'
-import uitFavorite from '@/assets/images/UitFavorite.png'
+import startImg from '@/assets/images/icon/start.png'
+import history from '@/assets/images/icon/history.png'
+import uitFavorite from '@/assets/images/icon/uitFavorite.png'
 
 const user = ref({
   avatar: startImg,

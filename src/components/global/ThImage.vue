@@ -13,7 +13,7 @@
       @error="handleError"
     />
     <div v-if="isLoading" class="loading-wrap">
-      <img class="loading-gif" src="@/assets/images/Loading-animation.gif" />
+      <img class="loading-gif" src="@/assets/images/icon/Loading-animation.gif" />
     </div>
     <div v-if="hasError" class="error-wrap">
       <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
