@@ -1,5 +1,15 @@
 import { defineStore } from 'pinia'
-import type { PlayerState, PlayerConfig } from '@/types'
+// 播放器状态类型
+interface PlayerState {
+  playing: boolean
+  currentTime: number
+  duration: number
+  volume: number
+  muted: boolean
+  fullscreen: boolean
+  loading: boolean
+  error: string | null
+}
 
 export const usePlayerStore = defineStore('player', {
   state: (): PlayerState => ({

@@ -3,7 +3,9 @@
     <div class="avatar" tabindex="0" aria-label="个人中心" @click="goProfile">
       <img :src="startImg" alt="用户头像" />
     </div>
-    <SearchBox @search="handleSearch" />
+    <div class="search-container">
+      <SearchBox @search="handleSearch" />
+    </div>
     <button class="icon-btn" @click="goMessage" tabindex="0" aria-label="消息中心">
       <div class="icon-message-wrap">
         <svg class="icon-message-svg" viewBox="0 0 1024 1024" width="22" height="22"><path d="M128 224h768a32 32 0 0 1 32 32v512a32 32 0 0 1-32 32H128a32 32 0 0 1-32-32V256a32 32 0 0 1 32-32zm32 64v448h704V288l-352 256L160 288zm64-32l288 210.7L832 256H192z" fill="#ff5c8a"/></svg>
@@ -60,6 +62,7 @@ function goPlay(video: any) {
     margin-right: 12px;
     cursor: pointer;
     transition: transform 0.2s ease;
+    flex-shrink: 0;
     
     &:hover, &:focus {
       transform: scale(1.05);
@@ -72,6 +75,10 @@ function goPlay(video: any) {
     }
   }
   
+  .search-container {
+    flex: 1; 
+  }
+  
   .icon-btn {
     margin-left: 12px;
     cursor: pointer;
@@ -80,6 +87,7 @@ function goPlay(video: any) {
     background: none;
     border: none;
     outline: none;
+    flex-shrink: 0;
     
     .icon-message-wrap {
       position: relative;
@@ -111,18 +119,19 @@ function goPlay(video: any) {
 // 添加移动端适配
 @media (max-width: 600px) {
   .header-bar {
+    padding: 8px 12px;
+    
     .avatar {
       width: 32px;
       height: 32px;
       margin-right: 8px;
-      flex-shrink: 0;
       
       img {
         width: 100%;
         height: 100%;
       }
     }
-    
+
     .icon-btn {
       margin-left: 8px;
       
@@ -140,4 +149,6 @@ function goPlay(video: any) {
     }
   }
 }
+
+
 </style> 

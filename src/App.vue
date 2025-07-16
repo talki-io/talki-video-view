@@ -3,7 +3,7 @@ import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import { useRoute } from 'vue-router'
 import { computed, onMounted } from 'vue'
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore } from '@/stores/authStore'
 
 const route = useRoute()
 const transitionName = computed(() =>

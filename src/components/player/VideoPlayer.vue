@@ -47,7 +47,17 @@ import { storeToRefs } from 'pinia'
 import { usePlayerStore } from '@/stores/player'
 import ArtPlayer from 'artplayer'
 import Hls from 'hls.js'
-import type { PlayerConfig } from '@/types'
+// 播放器配置类型
+interface PlayerConfig {
+  url: string
+  title?: string
+  poster?: string
+  volume?: number
+  autoplay?: boolean
+  muted?: boolean
+  loop?: boolean
+  vtt?: string // VTT 缩略图地址
+}
 import {
   VideoPlay,
   VideoPause,

@@ -2,11 +2,11 @@
   <div class="auth-page">
     <div class="auth-container">
       <div class="auth-header">
-        <h1 class="auth-title">登录</h1>
-        <p class="auth-subtitle">欢迎回来，请登录您的账户</p>
+        <h1 class="auth-title">重置密码</h1>
+        <p class="auth-subtitle">请输入您的邮箱地址重置密码</p>
       </div>
       
-      <form class="auth-form" @submit.prevent="handleLogin">
+      <form class="auth-form" @submit.prevent="handleResetPassword">
         <div class="form-group">
           <label class="form-label">邮箱</label>
           <input
@@ -22,13 +22,13 @@
         </div>
         
         <div class="form-group">
-          <label class="form-label">密码</label>
+          <label class="form-label">新密码</label>
           <div class="password-input-wrapper">
             <input
-              v-model="form.password"
+              v-model="form.newPassword"
               :type="showPassword ? 'text' : 'password'"
               class="form-input"
-              placeholder="请输入密码"
+              placeholder="请输入新密码"
             />
             <button
               type="button"
@@ -42,20 +42,42 @@
           </div>
         </div>
         
+        <div class="form-group">
+          <label class="form-label">验证码</label>
+          <div class="verification-input-wrapper">
+            <input
+              v-model="form.verificationCode"
+              type="text"
+              class="form-input"
+              placeholder="请输入验证码"
+            />
+            <button
+              type="button"
+              class="btn-verification"
+              :disabled="!canSendCode || sendingCode"
+              @click="sendVerificationCode"
+            >
+              <span v-if="sendingCode">发送中...</span>
+              <span v-else-if="countdown > 0">{{ countdown }}s</span>
+              <span v-else>发送验证码</span>
+            </button>
+          </div>
+        </div>
+        
         <div class="form-actions">
           <button
             type="submit"
             class="btn-primary"
             :disabled="!isFormValid || loading"
           >
-            <span v-if="loading">登录中...</span>
-            <span v-else>登录</span>
+            <span v-if="loading">重置中...</span>
+            <span v-else>重置密码</span>
           </button>
         </div>
         
         <div class="auth-links">
-          <router-link to="/register" class="auth-link">注册账户</router-link>
-          <router-link to="/forgot-password" class="auth-link">忘记密码？</router-link>
+          <span class="auth-text">记起密码了？</span>
+          <router-link to="/login" class="auth-link">立即登录</router-link>
         </div>
       </form>
     </div>
@@ -65,23 +87,36 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore } from '@/stores/authStore'
 
 const router = useRouter()
 const authStore = useAuthStore()
 
 const form = ref({
   email: '',
-  password: ''
+  newPassword: '',
+  verificationCode: ''
 })
 
 const emailError = ref('')
 const showPassword = ref(false)
+const sendingCode = ref(false)
+const countdown = ref(0)
 
 const loading = computed(() => authStore.loading)
 
 const isFormValid = computed(() => {
-  return form.value.email && form.value.password && !emailError.value
+  return form.value.email && 
+         form.value.newPassword && 
+         form.value.verificationCode && 
+         !emailError.value
+})
+
+const canSendCode = computed(() => {
+  return form.value.email && 
+         form.value.newPassword && 
+         !emailError.value && 
+         countdown.value === 0
 })
 
 const validateEmail = () => {
@@ -105,17 +140,49 @@ const togglePassword = () => {
   showPassword.value = !showPassword.value
 }
 
-const handleLogin = async () => {
+const sendVerificationCode = async () => {
+  if (!canSendCode.value) return
+  
+  sendingCode.value = true
+  
+  try {
+    const result = await authStore.sendVerificationCode(form.value.email, 'reset')
+    
+    if (result.success) {
+      // 开始倒计时
+      countdown.value = 60
+      const timer = setInterval(() => {
+        countdown.value--
+        if (countdown.value <= 0) {
+          clearInterval(timer)
+        }
+      }, 1000)
+    } else {
+      console.error('发送验证码失败:', result.message)
+    }
+    
+  } catch (error) {
+    console.error('发送验证码失败:', error)
+  } finally {
+    sendingCode.value = false
+  }
+}
+
+const handleResetPassword = async () => {
   if (!isFormValid.value) return
   
-  const result = await authStore.login(form.value.email, form.value.password)
+  const result = await authStore.resetPassword({
+    email: form.value.email,
+    newPassword: form.value.newPassword,
+    verificationCode: form.value.verificationCode
+  })
   
   if (result.success) {
-    // 登录成功后跳转
-    router.push('/home')
+    // 重置成功后跳转到登录页
+    router.push('/login')
   } else {
     // 这里可以添加错误提示
-    console.error('登录失败:', result.error)
+    console.error('重置密码失败:', result.error)
   }
 }
 </script>
@@ -221,6 +288,41 @@ const handleLogin = async () => {
     }
   }
   
+  .verification-input-wrapper {
+    display: flex;
+    gap: 12px;
+    
+    .form-input {
+      flex: 1;
+    }
+    
+    .btn-verification {
+      padding: 12px 16px;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+      white-space: nowrap;
+      min-width: 100px;
+      
+      &:hover:not(:disabled) {
+        background: #337ecc;
+      }
+      
+      &:disabled {
+        background: var(--info-color);
+        cursor: not-allowed;
+      }
+      
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+  }
+  
   .error-message {
     color: var(--danger-color);
     font-size: 12px;
@@ -261,10 +363,17 @@ const handleLogin = async () => {
 
 .auth-links {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
   margin-top: 24px;
   padding-top: 24px;
   border-top: 1px solid var(--border-color);
+}
+
+.auth-text {
+  color: var(--text-color-secondary);
+  font-size: 14px;
 }
 
 .auth-link {

@@ -2,11 +2,11 @@
   <div class="auth-page">
     <div class="auth-container">
       <div class="auth-header">
-        <h1 class="auth-title">重置密码</h1>
-        <p class="auth-subtitle">请输入您的邮箱地址重置密码</p>
+        <h1 class="auth-title">注册</h1>
+        <p class="auth-subtitle">创建您的账户</p>
       </div>
       
-      <form class="auth-form" @submit.prevent="handleResetPassword">
+      <form class="auth-form" @submit.prevent="handleRegister">
         <div class="form-group">
           <label class="form-label">邮箱</label>
           <input
@@ -22,13 +22,13 @@
         </div>
         
         <div class="form-group">
-          <label class="form-label">新密码</label>
+          <label class="form-label">密码</label>
           <div class="password-input-wrapper">
             <input
-              v-model="form.newPassword"
+              v-model="form.password"
               :type="showPassword ? 'text' : 'password'"
               class="form-input"
-              placeholder="请输入新密码"
+              placeholder="请输入密码"
             />
             <button
               type="button"
@@ -40,6 +40,16 @@
               <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2.293 2.293a1 1 0 0 1 1.414 0l14 14a1 1 0 0 1-1.414 1.414l-2.09-2.09C12.47 16.2 11.26 16.5 10 16.5c-5 0-8.27-4.11-8.87-4.93a1 1 0 0 1 0-1.14c.37-.5 1.13-1.47 2.19-2.36L2.293 2.293ZM10 14.5c1.26 0 2.47-.3 3.5-.82l-1.44-1.44A3 3 0 0 1 7.76 8.94l-1.44-1.44C3.87 8.61 1.87 10.39 1.13 11.07c1.06 1.39 3.88 4 7.19 4Zm7.19-3.5c-.37.5-1.13 1.47-2.19 2.36l-1.44-1.44A3 3 0 0 0 12.24 8.94l-1.44-1.44C16.13 8.61 18.13 10.39 18.87 11.07c-1.06 1.39-3.88 4-7.19 4Z" fill="#409eff"/></svg>
             </button>
           </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">邀请码 <span class="required">*</span></label>
+          <input
+            v-model="form.inviteCode"
+            type="text"
+            class="form-input"
+            placeholder="请输入邀请码"
+          />
         </div>
         
         <div class="form-group">
@@ -70,13 +80,13 @@
             class="btn-primary"
             :disabled="!isFormValid || loading"
           >
-            <span v-if="loading">重置中...</span>
-            <span v-else>重置密码</span>
+            <span v-if="loading">注册中...</span>
+            <span v-else>注册</span>
           </button>
         </div>
         
         <div class="auth-links">
-          <span class="auth-text">记起密码了？</span>
+          <span class="auth-text">已有账户？</span>
           <router-link to="/login" class="auth-link">立即登录</router-link>
         </div>
       </form>
@@ -87,14 +97,16 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore } from '@/stores/authStore'
+import { ElMessage } from 'element-plus'
 
 const router = useRouter()
 const authStore = useAuthStore()
 
 const form = ref({
   email: '',
-  newPassword: '',
+  password: '',
+  inviteCode: '',
   verificationCode: ''
 })
 
@@ -107,14 +119,16 @@ const loading = computed(() => authStore.loading)
 
 const isFormValid = computed(() => {
   return form.value.email && 
-         form.value.newPassword && 
+         form.value.password && 
+         form.value.inviteCode && 
          form.value.verificationCode && 
          !emailError.value
 })
 
 const canSendCode = computed(() => {
   return form.value.email && 
-         form.value.newPassword && 
+         form.value.password && 
+         form.value.inviteCode && 
          !emailError.value && 
          countdown.value === 0
 })
@@ -146,11 +160,10 @@ const sendVerificationCode = async () => {
   sendingCode.value = true
   
   try {
-    // 这里添加发送验证码的逻辑
-    console.log('发送验证码到:', form.value.email)
+    const result = await authStore.sendVerificationCode(form.value.email, 'register')
     
-    // 模拟发送验证码请求
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    if (result.success) {
+      ElMessage.success('验证码已发送到您的邮箱')
     
     // 开始倒计时
     countdown.value = 60
@@ -160,29 +173,33 @@ const sendVerificationCode = async () => {
         clearInterval(timer)
       }
     }, 1000)
+    } else {
+      ElMessage.error(result.message || '发送验证码失败')
+    }
     
-  } catch (error) {
+  } catch (error: any) {
     console.error('发送验证码失败:', error)
+    ElMessage.error(error?.message || '发送验证码失败，请重试')
   } finally {
     sendingCode.value = false
   }
 }
 
-const handleResetPassword = async () => {
+const handleRegister = async () => {
   if (!isFormValid.value) return
   
-  const result = await authStore.resetPassword(
-    form.value.email, 
-    form.value.newPassword, 
-    form.value.verificationCode
-  )
+  const result = await authStore.register({
+    email: form.value.email,
+    password: form.value.password,
+    inviteCode: form.value.inviteCode,
+    verificationCode: form.value.verificationCode
+  })
   
   if (result.success) {
-    // 重置成功后跳转到登录页
+    ElMessage.success('注册成功，请登录')
     router.push('/login')
   } else {
-    // 这里可以添加错误提示
-    console.error('重置密码失败:', result.error)
+    ElMessage.error(result.error || '注册失败，请重试')
   }
 }
 </script>
@@ -239,6 +256,10 @@ const handleResetPassword = async () => {
     color: var(--text-color);
     margin-bottom: 8px;
     font-size: 14px;
+    
+    .required {
+      color: var(--danger-color);
+    }
   }
   
   .form-input {

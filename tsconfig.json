@@ -19,6 +19,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "exactOptionalPropertyTypes": true,
 
     /* Path Aliases */
     "baseUrl": ".",
@@ -29,7 +32,10 @@
       "@stores/*": ["src/stores/*"],
       "@utils/*": ["src/utils/*"],
       "@types/*": ["src/types/*"],
-      "@composables/*": ["src/composables/*"]
+      "@api/*": ["src/api/*"],
+      "@views/*": ["src/views/*"],
+      "@plugins/*": ["src/plugins/*"],
+      "@directives/*": ["src/directives/*"]
     },
 
     /* ES Module Interop */
@@ -37,9 +43,22 @@
     "allowSyntheticDefaultImports": true,
 
     /* Node.js */
-    "types": ["node", "vue-router"]
+    "types": ["node", "vue-router", "vite/client"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "vite.config.ts"],
-  "exclude": ["src/components/common/ImageLoader.vue", "src/components/layout/VideoCard.vue"],
+  "include": [
+    "src/**/*.ts", 
+    "src/**/*.d.ts", 
+    "src/**/*.tsx", 
+    "src/**/*.vue", 
+    "vite.config.ts",
+    "env.d.ts",
+    "src/types/global.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/components/common/ImageLoader.vue", 
+    "src/components/layout/VideoCard.vue"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

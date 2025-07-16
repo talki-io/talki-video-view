@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import ThImage from '@/components/global/ThImage.vue'
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore } from '@/stores/authStore'
 
 const props = defineProps<{ user: any }>()
 const authStore = useAuthStore()
