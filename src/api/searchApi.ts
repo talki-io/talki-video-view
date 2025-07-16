@@ -16,7 +16,7 @@ export const searchApi = {
    * @param params 搜索参数
    * @returns 搜索结果
    */
-    search(params: SearchParams): Promise<ApiResponse<SearchResponse>> {
+  search(params: SearchParams): Promise<ApiResponse<SearchResponse>> {
     return httpClient.get('/search', { params })
   },
 
@@ -24,7 +24,7 @@ export const searchApi = {
    * 搜索视频
    * @param keyword 关键词
    * @param params 查询参数
-   * @returns 视频搜索结果
+   * @returns 视频搜索结果 
    */
   searchVideos(keyword: string, params?: { page?: number; pageSize?: number }): Promise<ApiResponse<{ videos: Video[]; total: number }>> {
     return httpClient.get('/search/videos', { params: { keyword, ...params } })
