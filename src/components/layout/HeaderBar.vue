@@ -119,7 +119,7 @@ function goPlay(video: any) {
 // 添加移动端适配
 @media (max-width: 600px) {
   .header-bar {
-    padding: 8px 12px;
+    padding: 10px 12px;
     
     .avatar {
       width: 32px;
