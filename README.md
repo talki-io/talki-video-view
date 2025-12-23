@@ -1,4 +1,4 @@
-# ThinCell 视频播放器
+# talki-video 视频播放器
 
 一个基于 Vue 3 + TypeScript + Vite 构建的现代化视频播放器应用。
 
@@ -132,7 +132,7 @@ npm run release          # 发布新版本
 ## 🏗️ 项目结构
 
 ```
-thincell-video-view/
+talki-video-view/
 ├── public/                 # 静态资源
 ├── src/
 │   ├── api/               # API 接口
